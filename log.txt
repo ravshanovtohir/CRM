@@ -14,3 +14,4 @@
 /api/crm/role__POST__1688014416488__ValidationError__Role title required
 /api/crm/role__POST__1688014497381__InternalServerError__Role title required
 /api/crm/role__POST__1688015069162__ValidationError__Role title required
+/api/crm/staff__POST__1688027047264__SyntaxError__Unexpected token d in JSON at position 38

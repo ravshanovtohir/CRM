@@ -1,13 +1,26 @@
+import { ObjectId } from "mongodb";
 import Staff from "../model/staff.js";
+import sha256 from "sha256";
 
 // get All
 export const getAllstaff = async (req, res) => {
   try {
-    const staff = await Staff.find();
+
+    let staff = await Staff.find();
+
+
+    staff = Object(staff)
+
+    delete staff.password
+    delete staff.is_ceo
+    delete staff.is_admin
+
     res
       .status(200)
       .json({ message: "successfully get are staff", data: staff });
-  } catch (error) {
+
+  }
+  catch (error) {
     res.status(500).json({
       message: error.message,
       data: false,
@@ -33,11 +46,19 @@ export const getOnestaff = async (req, res) => {
 // post
 export const addNewstaff = async (req, res) => {
   try {
+
+    const { name, rol, password, phoneNumber, gender, date_birth, img, description } = req.body
+
+
     const staff = new Staff({
-      name: req.body.name,
-      rol: req.body.rol,
-      password: req.body.password,
-      phoneNumber: req.body.phoneNumber,
+      name,
+      rol: ObjectId(rol),
+      password: sha256(password),
+      phoneNumber,
+      gender: "male",
+      date_birth: new Date(),
+      img,
+      description
     });
 
     await staff.save();

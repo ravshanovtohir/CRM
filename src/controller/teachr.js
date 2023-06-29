@@ -3,7 +3,7 @@ import Teachr from "../model/teachr.js";
 // get All
 export const getAllteachr = async (req, res) => {
   try {
-    const teachr = await Teachr.find();
+    const teachr = await Teachr.find()
     res
       .status(200)
       .json({ message: "successfully get are teachrs", data: teachr });
