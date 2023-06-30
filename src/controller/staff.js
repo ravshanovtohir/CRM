@@ -6,18 +6,19 @@ import sha256 from "sha256";
 export const getAllstaff = async (req, res) => {
   try {
 
-    let staff = await Staff.find();
+    let staffs = await Staff.find();
 
-
-    staff = Object(staff)
-
-    delete staff.password
-    delete staff.is_ceo
-    delete staff.is_admin
+    staffs = staffs.map(el => {
+      el = el.toObject()
+      delete el.password
+      delete el.is_ceo
+      delete el.is_admin
+      return el
+    })
 
     res
       .status(200)
-      .json({ message: "successfully get are staff", data: staff });
+      .json({ message: "successfully get all staffs", data: staffs });
 
   }
   catch (error) {
@@ -31,10 +32,20 @@ export const getAllstaff = async (req, res) => {
 // get
 export const getOnestaff = async (req, res) => {
   try {
-    const staff = await Staff.findById(req.params.id);
+    let staff = await Staff.findById(req.params.id);
+
+    staff = staff.toObject()
+
+    delete staff.password
+    delete staff.is_ceo
+    delete staff.is_admin
+
+    console.log(staff);
+
     res
       .status(200)
-      .json({ message: "successfully get are staff", data: staff });
+      .json({ message: "successfully get staff by ID", data: staff });
+
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -42,6 +53,7 @@ export const getOnestaff = async (req, res) => {
     });
   }
 };
+
 
 // post
 export const addNewstaff = async (req, res) => {

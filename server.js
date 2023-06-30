@@ -1,5 +1,6 @@
 import express from "express";
 import { connectDB } from "./src/config/connectDB.js";
+import fileUpload from "express-fileupload"
 import dotenv from "dotenv";
 import cors from "cors";
 import fs from "fs"
@@ -21,6 +22,7 @@ import bannerRouter from "./src/routes/banner.js";
 import roleRouter from "./src/routes/role.js"
 
 app.use(express.json());
+app.use(fileUpload())
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/crm/teacher", teacherRouter);
