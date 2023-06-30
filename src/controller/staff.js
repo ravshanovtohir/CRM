@@ -9,6 +9,8 @@ import { log } from "console";
 export const getAllstaff = async (req, res) => {
   try {
 
+    console.log(req.user_id);
+
     let staffs = await Staff.find();
 
     staffs = staffs.map(el => {
