@@ -4,6 +4,7 @@ import fileUpload from "express-fileupload"
 import dotenv from "dotenv";
 import cors from "cors";
 import fs from "fs"
+import path from "path"
 dotenv.config();
 connectDB();
 
@@ -22,6 +23,7 @@ import bannerRouter from "./src/routes/banner.js";
 import roleRouter from "./src/routes/role.js"
 
 app.use(express.json());
+app.use(express.static(path.join(process.cwd(), "uploads")))
 app.use(fileUpload())
 app.use(express.urlencoded({ extended: true }));
 

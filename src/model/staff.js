@@ -8,7 +8,7 @@ const staffSchema = new Schema(
     },
     rol: {
       type: Schema.Types.ObjectId,
-      required: true
+      default: null
     },
     password: {
       type: "string",
