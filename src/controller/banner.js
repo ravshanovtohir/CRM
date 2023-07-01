@@ -34,14 +34,18 @@ export const getOneBanner = async (req, res) => {
 // post
 export const addNewBanner = async (req, res) => {
   try {
+
+    const img = req.files.file.name
+    const fileName = Date.now() + img
+
     const banner = new Banner({
       title: req.body.title,
-      img: req.body.img,
+      img: fileName,
       description: req.body.description,
     });
 
     await banner.save();
-    res.status(200).json({ message: "successfully loaded", data: banner });
+    res.status(200).json({ message: "successfully added new banner", data: banner });
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -53,27 +57,31 @@ export const addNewBanner = async (req, res) => {
 //put
 export const updateBanner = async (req, res) => {
   try {
-    const { title, img, description } = req.body;
+    const { title, description } = req.body;
+    const cat = await Banner.findById(req.params.id)
 
-    await Banner.findOneAndUpdate(
+    const category = await Banner.findOneAndUpdate(
       { _id: req.params.id },
       {
         $set: {
           title,
-          img,
+          img: req?.files?.file ? Date.now() + req?.files.file?.name : cat.img,
           description,
         },
       },
       { new: true }, // This line makes sure that the updated document is returned
-      (err, updatedBanner) => {
-        if (err) {
-          console.error(err);
-          res.status(500).send("Error: " + err);
-        } else {
-          res.json(updatedBanner);
-        }
-      }
+
     );
+
+    return res
+      .status(200)
+      .json({
+        status: 200,
+        message: 'The banner successfully updated!',
+        data: category
+      })
+
+
   } catch (error) {
     res.status(500).json({
       message: error.message,

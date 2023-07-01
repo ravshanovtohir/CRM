@@ -168,10 +168,12 @@ export const addNewstaff = async (req, res) => {
           data: false
         })
       }
+
       if (!['image/png', 'image/jpeg', 'image/jpg'].includes(mimetype)) {
-        return next(
-          new error.ValidationError(415, "The file must be jpg ,jpeg or png!")
-        )
+        return res.status(413).json({
+          message: "The file must be jpg ,jpeg or png!",
+          data: false
+        })
       }
 
       fileName = Date.now() + name.replace(/\s/g, '')

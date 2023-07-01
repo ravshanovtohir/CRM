@@ -21,7 +21,7 @@ export const getOnecategory = async (req, res) => {
     const category = await Category.findById(req.params.id);
     res
       .status(200)
-      .json({ message: "successfully get are category", data: category });
+      .json({ message: "successfully get are category by ID", data: category });
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -39,7 +39,7 @@ export const addNewcategory = async (req, res) => {
     });
 
     await category.save();
-    res.status(200).json({ message: "successfully updatedAt", data: category });
+    res.status(200).json({ message: "successfully added new category", data: category });
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -53,7 +53,7 @@ export const updatecategory = async (req, res) => {
   try {
     const { title, price } = req.body;
 
-    await Category.findOneAndUpdate(
+    const newcat = await Category.findOneAndUpdate(
       { _id: req.params.id },
       {
         $set: {
@@ -61,16 +61,17 @@ export const updatecategory = async (req, res) => {
           price,
         },
       },
-      { new: true }, // This line makes sure that the updated document is returned
-      (err, updatedUser) => {
-        if (err) {
-          console.error(err);
-          res.status(500).send("Error: " + err);
-        } else {
-          res.json(updatedUser);
-        }
-      }
+      { new: true } // This line makes sure that the updated document is returned
+
     );
+
+    return res
+      .status(200)
+      .json({
+        status: 200,
+        message: 'The category successfully updated!',
+        data: newcat
+      })
   } catch (error) {
     res.status(500).json({
       message: error.message,
