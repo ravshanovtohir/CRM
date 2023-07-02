@@ -13,7 +13,6 @@ export default async function (req, res, next) {
             })
         }
 
-        console.log('middleware');
 
         const { user_id, agent, ip } = JWT.verify(token)
 

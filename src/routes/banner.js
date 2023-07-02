@@ -15,7 +15,7 @@ import {
 } from "../controller/banner.js";
 
 router.post("/", checkToken, checkRole, validator.validateBanner, uploadFileForBanner, addNewBanner);
-router.put("/update/:id", checkToken, checkRole, updateBanner);
+router.put("/update/:id", checkToken, checkRole, uploadFileForBanner, updateBanner);
 router.get("/", checkToken, checkRole, getAllBanner);
 router.get("/:id", checkToken, checkRole, getOneBanner);
 router.delete("/delete/:id", checkToken, checkRole, deleteBanner);

@@ -2,18 +2,49 @@ import { Schema, model } from "mongoose";
 
 const groupSchema = new Schema(
   {
-    gropName: { type: "string", required: true },
-    teacher: { type: "string", required: true },
-    room: { type: "string", required: true },
-    category: { type: "string", required: true },
-    day: { type: "string", required: true },
-    startTime: { type: "string", required: true },
-    startGroup: { type: "date", required: true },
-    endGroup: { type: "date", required: true },
-    students: [{type: Schema.Types.ObjectId, ref: "Student", required: true }],
+    gropName: {
+      type: "string",
+      required: true
+    },
+    teacher: {
+      type: Schema.Types.ObjectId,
+      required: true
+    },
+    room: {
+      type: "string",
+      required: true
+    },
+    category: {
+      type: Schema.Types.ObjectId,
+      required: true
+    },
+    day: {
+      type: "string",
+      required: true
+    },
+    startTime: {
+      type: "string",
+      required: true
+    },
+    startGroup: {
+      type: "date",
+      required: true
+    },
+    endGroup: {
+      type: "date",
+      required: true
+    },
+    students: [{
+      type: Schema.Types.ObjectId,
+      ref: "Student",
+      required: true
+    }],
     date: [Schema.Types.Mixed],
   },
-  { timestamps: true }
+  {
+    timestamps:
+      true
+  }
 );
 
 // groupSchema.statics.addStudent = function (student) {

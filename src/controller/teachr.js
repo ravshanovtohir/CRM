@@ -36,17 +36,28 @@ export const getOneteachr = async (req, res) => {
 // post
 export const addNewteachr = async (req, res) => {
   try {
+
+    let fileName;
+
+    if (!req?.fileName) {
+      if (req.body.gender == "male") fileName = "male_teacher"
+      if (req.body.gender == "female") fileName = "female_teacher"
+    }
+
+
     const teachr = new Teachr({
       name: req.body.name,
       age: req.body.age,
-      categorys: req.body.categorys,
-      grops: req.body.grops,
+      phone_number: req.body.phone_number,
+      gender: req.body.gender,
+      salary: req.body.salary,
+      img: req?.fileName ? req?.fileName : fileName
     });
 
     await teachr.save();
-    res.status(200).json({ message: "successfully added", data: teachr });
+    return res.status(200).json({ message: "successfully added", data: teachr });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
       data: false,
     });
@@ -56,27 +67,30 @@ export const addNewteachr = async (req, res) => {
 //put
 export const updateteachr = async (req, res) => {
   try {
-    const { name, age, categorys, grops } = req.body;
+    const { name, age, phone_number, gender, salary } = req.body;
     const teacher = await Teachr.findById(req.params.id);
 
     if (!teacher) {
-      res.status(404).json({ message: "Teacher not found", data: teacher });
-    } else {
+      return res.status(404).json({ message: "Teacher not found", data: teacher });
+    }
+    else {
       Teachr.findOneAndUpdate(
         { _id: req.params.id },
         {
           $set: {
-            name,
-            age,
-            categorys,
-            grops,
+            name: name,
+            age: age,
+            phone_number: phone_number,
+            gender: gender,
+            salary: salary,
+            img: req?.fileName ? req?.fileName : teacher.img
           },
         },
         { new: true },
         (err, updatedUser) => {
           if (err) {
-            console.error(err);
-            res.status(500).send("Error: " + err);
+            // console.error(err);
+            return res.status(500).send("Error: " + err);
           } else {
             res.json(updatedUser);
           }
@@ -84,7 +98,7 @@ export const updateteachr = async (req, res) => {
       );
     }
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
       data: false,
     });

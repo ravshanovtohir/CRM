@@ -4,8 +4,9 @@ import path from "path"
 export default async function uploadFileForBanner(req, res, next) {
     try {
 
-        if (!req?.files?.file) {
-            next()
+        if (!(req?.files?.file)) {
+            console.log("Otqizvoryaptiku");
+            return next()
         }
 
         const file = req.files.file
@@ -28,6 +29,10 @@ export default async function uploadFileForBanner(req, res, next) {
         const fileName = Date.now() + name.replace(/\s/g, '')
         const pathName = path.join(process.cwd(), 'uploads', fileName)
         fs.writeFileSync(pathName, data)
+
+        req.fileName = fileName
+        console.log(1);
+        console.log(req.fileName);
 
         next()
 

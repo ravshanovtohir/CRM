@@ -59,13 +59,14 @@ export const updateBanner = async (req, res) => {
   try {
     const { title, description } = req.body;
     const cat = await Banner.findById(req.params.id)
+    console.log(cat);
 
     const category = await Banner.findOneAndUpdate(
       { _id: req.params.id },
       {
         $set: {
           title,
-          img: req?.files?.file ? Date.now() + req?.files.file?.name : cat.img,
+          img: req?.fileName ? req?.fileName : cat.img,
           description,
         },
       },

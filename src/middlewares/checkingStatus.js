@@ -8,7 +8,6 @@ export default async function checkRole(req, res, next) {
 
         const staff = await Staff.findById(id)
 
-        console.log(staff);
 
         if (!(staff.is_ceo === true || staff.is_admin === true)) {
             return res.status(403).json({
