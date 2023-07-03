@@ -41,8 +41,8 @@ export const addNewstudent = async (req, res) => {
   try {
     const student = new Students({
       name: req.body.name,
-      age: req.body.age,
-      category: req.body.category,
+      date_birth: req.body.date_birth,
+      gender: req.body.gender,
       phoneNumber: req.body.phoneNumber,
     });
     await student.save();
@@ -59,16 +59,18 @@ export const addNewstudent = async (req, res) => {
 //put
 export const updatestudent = async (req, res) => {
   try {
-    const { name, age, category, phoneNumber } = req.body;
+    const { name, gender, date_birth, phoneNumber, days, group } = req.body;
 
     const student = await Students.findByIdAndUpdate(
       { _id: req.params.id },
       {
         $set: {
           name,
-          age,
-          category,
+          date_birth,
+          gender,
           phoneNumber,
+          days,
+          group
         },
       },
       { new: true, useFindAndModify: false }

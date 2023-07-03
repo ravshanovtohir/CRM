@@ -4,6 +4,7 @@ const catecorySchema = new Schema(
   {
     title: { type: "string", required: true },
     price: { type: "number", required: true },
+    duration: { type: "number", required:true}
   },
   { timestamps: true }
 );

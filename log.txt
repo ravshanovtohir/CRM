@@ -15,3 +15,6 @@
 /api/crm/role__POST__1688014497381__InternalServerError__Role title required
 /api/crm/role__POST__1688015069162__ValidationError__Role title required
 /api/crm/staff__POST__1688027047264__SyntaxError__Unexpected token d in JSON at position 38
+/api/crm/student__POST__1688366393897__SyntaxError__Unexpected token } in JSON at position 75
+/api/crm/student__POST__1688366436825__SyntaxError__Unexpected token } in JSON at position 136
+/api/crm/groups__POST__1688367845102__SyntaxError__Unexpected token } in JSON at position 101

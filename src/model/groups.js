@@ -8,6 +8,7 @@ const groupSchema = new Schema(
     },
     teacher: {
       type: Schema.Types.ObjectId,
+      ref: "Teachr",
       required: true
     },
     room: {

@@ -24,9 +24,9 @@ import roleRouter from "./src/routes/role.js"
 import authRouter from "./src/routes/auth.js";
 
 app.use(express.json());
-app.use(express.static(path.join(process.cwd(), "uploads")))
 app.use(fileUpload())
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(process.cwd(), "uploads")))
 
 app.use("/api/crm/teacher", teacherRouter);
 app.use("/api/crm/student", studentsRouter);

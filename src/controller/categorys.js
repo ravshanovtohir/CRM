@@ -36,6 +36,7 @@ export const addNewcategory = async (req, res) => {
     const category = new Category({
       title: req.body.title,
       price: req.body.price,
+      duration: req.body.duration
     });
 
     await category.save();

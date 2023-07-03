@@ -1,5 +1,10 @@
 import Router from "express";
 const router = Router();
+
+import checkToken from "../middlewares/checkToken.js";
+import checkRole from "../middlewares/checkingStatus.js";
+import validation from "../middlewares/validation.js";
+
 import {
   getAllstudent,
   getOnestudent,
@@ -10,12 +15,12 @@ import {
   davomat
 } from "../controller/students.js";
 
-router.post("/", addNewstudent);
-router.put("/update/:id", updatestudent);
-router.get("/", getAllstudent);
-router.get("/:id", getOnestudent);
-router.delete("/delete/:id", deletestudent);
-router.post("/addstudent/:id", addstudents);
-router.post("/davomat/:id", davomat);
+router.post("/", checkToken, checkRole, validation.validateStudent, addNewstudent);
+router.put("/update/:id", checkToken, checkRole, updatestudent);
+router.get("/", checkToken, checkRole, getAllstudent);
+router.get("/:id", checkToken, checkRole, getOnestudent);
+router.delete("/delete/:id", checkToken, checkRole, deletestudent);
+router.post("/addstudent/:id", checkToken, checkRole, addstudents);
+router.post("/davomat/:id", checkToken, checkRole, davomat);
 
 export default router;

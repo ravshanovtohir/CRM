@@ -1,10 +1,40 @@
 import mongoose from "mongoose";
 import Group from "../model/groups.js";
+import Category from "../model/category.js";
 import { getFullDaysEven, getFullDaysOdd } from "./davomat.js";
+
+
+// .populate({
+//   path: "students",
+//   model: "Student",
+//   select: ["name", "age", "phoneNumber", "days"],
+// })
+// .exec((err, data) => {
+//   if (err) {
+//     res.status(500).send({ message: "Failed!" });
+//     return;
+//   }
 
 export const getAllgroup = async (req, res) => {
   try {
-    const group = await Group.find();
+    const group = await Group.find()
+      .populate([
+        {
+          path: "teacher",
+          model: "Teachr",
+          select: ["name", "age", "gender"]
+        },
+        {
+          path: "category",
+          model: "Category",
+          select: ["title", "price", "duration"]
+        }, {
+          path: "students",
+          model: "Student",
+          select: ["name", "gender", "phoneNumber"]
+        }
+      ])
+
     res
       .status(200)
       .json({ message: "successfully get are group", data: group });
@@ -19,10 +49,26 @@ export const getAllgroup = async (req, res) => {
 // get by Id
 export const getOnegroup = async (req, res) => {
   try {
-    const group = await Group.findById(req.params.id);
+    const group = await Group.findById(req.params.id)
+      .populate([
+        {
+          path: "teacher",
+          model: "Teachr",
+          select: ["name", "age", "gender"]
+        },
+        {
+          path: "category",
+          model: "Category",
+          select: ["title", "price", "duration"]
+        }, {
+          path: "students",
+          model: "Student",
+          select: ["name", "gender", "phoneNumber"]
+        }
+      ])
     res
       .status(200)
-      .json({ message: "successfully get are group", data: group });
+      .json({ message: "successfully get group by ID", data: group });
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -33,6 +79,9 @@ export const getOnegroup = async (req, res) => {
 
 // post
 export const addNewgroup = async (req, res) => {
+
+  const date = new Date(req?.body?.startGroup)
+  const category = await Category.findById(req.body.category)
   try {
     const group = new Group({
       gropName: req.body.gropName,
@@ -41,19 +90,20 @@ export const addNewgroup = async (req, res) => {
       category: req.body.category,
       day: req.body.day,
       startTime: req.body.startTime,
-      startGroup: req.body.startGroup,
-      endGroup: req.body.endGroup,
+      startGroup: date,
+      endGroup: date.setMonth(date.getMonth() + category.duration),
     });
 
     if (group.day === "toq") {
+      console.log("hello");
       group.date = getFullDaysOdd(group.startGroup, group.endGroup);
     } else {
       group.date = getFullDaysEven(group.startGroup, group.endGroup);
     }
     await group.save();
-    res.status(200).json({ message: "successfully updatedAt", data: group });
+    res.status(200).json({ message: "successfully added new Group", data: group });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
       data: false,
     });
@@ -78,7 +128,22 @@ export const updategroup = async (req, res) => {
         },
       },
       { new: true, useFindAndModify: false }
-    );
+    ).populate([
+      {
+        path: "teacher",
+        model: "Teachr",
+        select: ["name", "age", "gender"]
+      },
+      {
+        path: "category",
+        model: "Category",
+        select: ["title", "price", "duration"]
+      }, {
+        path: "students",
+        model: "Student",
+        select: ["name", "gender", "phoneNumber"]
+      }
+    ])
     if (!group) {
       res.status(500).json({
         message: "Is not a group",
