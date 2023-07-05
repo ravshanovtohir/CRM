@@ -179,7 +179,7 @@ async function validateStudent(req, res, next) {
         }
 
         // let date = regexDataBirth.test(date_birth)
-        if (!new Date(date_birth)) {
+        if (new Date(date_birth) == "Invalid Date") {
             return res.status(403).json({
                 message: `Invalid date birth. must be YYYY.MM.DD`,
                 data: false
@@ -326,7 +326,7 @@ async function validateGroup(req, res, next) {
                 data: false,
             });
         }
-        if (!new Date(startGroup)) {
+        if (new Date(startGroup) == "Invalid Date") {
             return res.status(500).json({
                 message: "Invalid date!",
                 data: false,
@@ -345,11 +345,86 @@ async function validateGroup(req, res, next) {
 }
 
 
+async function validationChiqim(req, res, next) {
+    try {
+
+        const { category, filial, name, date, price, description } = req.body
+
+        if (!category) {
+            return res.status(500).json({
+                message: "Category ID  required!",
+                data: false,
+            });
+        }
+
+        if (!filial) {
+            return res.status(500).json({
+                message: "Filial  required!",
+                data: false,
+            });
+        }
+
+
+        if (filial.length > 35 || filial.length <= 4) {
+            return res.status(500).json({
+                message: "Invalid length for name. Length of name must more then 6 and less than 35 !",
+                data: false,
+            });
+        }
+
+        if (!name) {
+            return res.status(500).json({
+                message: "Name required!",
+                data: false,
+            });
+        }
+
+        if (!date) {
+            return res.status(500).json({
+                message: "Date required!",
+                data: false,
+            });
+        }
+
+        if (new Date(date) == "Invalid Date") {
+            return res.status(500).json({
+                message: "Invalid date! Date  MUST be YYYY.MM.DD",
+                data: false,
+            });
+        }
+        //roomni togri kiritilganligini tekshirish kerak
+
+        if (!price) {
+            return res.status(500).json({
+                message: "Price required!",
+                data: false,
+            });
+        }
+
+        if (!description) {
+            return res.status(500).json({
+                message: "Description required!",
+                data: false,
+            });
+        }
+
+        next()
+
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message,
+            data: false,
+        });
+    }
+}
+
 
 export default {
     validateBanner,
     validateCategory,
     validationTeacher,
     validateStudent,
-    validateGroup
+    validateGroup,
+    validationChiqim
 }

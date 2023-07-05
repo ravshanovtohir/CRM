@@ -3,10 +3,18 @@ import Chiqim from "../model/chiqim.js";
 // get All
 export const getAllchiqim = async (req, res) => {
   try {
-    const chiqim = await Chiqim.find();
+    const chiqim = await Chiqim.find()
+      .populate({
+        path: "category",
+        model: "Category",
+        select: ["title", "price", "duration"],
+      });
+
+
     res
       .status(200)
       .json({ message: "successfully get are chiqim", data: chiqim });
+
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -18,7 +26,12 @@ export const getAllchiqim = async (req, res) => {
 // get
 export const getOnechiqim = async (req, res) => {
   try {
-    const chiqim = await Chiqim.findById(req.params.id);
+    const chiqim = await Chiqim.findById(req.params.id)
+      .populate({
+        path: "category",
+        model: "Category",
+        select: ["title", "price", "duration"],
+      });
     res
       .status(200)
       .json({ message: "successfully get are chiqim", data: chiqim });
@@ -33,6 +46,7 @@ export const getOnechiqim = async (req, res) => {
 // post
 export const addNewchiqim = async (req, res) => {
   try {
+
     const chiqim = new Chiqim({
       category: req.body.category,
       filial: req.body.filial,
@@ -43,7 +57,7 @@ export const addNewchiqim = async (req, res) => {
     });
 
     await chiqim.save();
-    res.status(200).json({ message: "successfully updatedAt", data: chiqim });
+    res.status(200).json({ message: "successfully added new chiqim", data: chiqim });
   } catch (error) {
     res.status(500).json({
       message: error.message,

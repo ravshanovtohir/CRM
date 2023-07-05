@@ -18,3 +18,4 @@
 /api/crm/student__POST__1688366393897__SyntaxError__Unexpected token } in JSON at position 75
 /api/crm/student__POST__1688366436825__SyntaxError__Unexpected token } in JSON at position 136
 /api/crm/groups__POST__1688367845102__SyntaxError__Unexpected token } in JSON at position 101
+/api/crm/chiqim__POST__1688537813541__SyntaxError__Unexpected token } in JSON at position 176

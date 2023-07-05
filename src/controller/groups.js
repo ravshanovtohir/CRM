@@ -4,17 +4,6 @@ import Category from "../model/category.js";
 import { getFullDaysEven, getFullDaysOdd } from "./davomat.js";
 
 
-// .populate({
-//   path: "students",
-//   model: "Student",
-//   select: ["name", "age", "phoneNumber", "days"],
-// })
-// .exec((err, data) => {
-//   if (err) {
-//     res.status(500).send({ message: "Failed!" });
-//     return;
-//   }
-
 export const getAllgroup = async (req, res) => {
   try {
     const group = await Group.find()
@@ -37,7 +26,7 @@ export const getAllgroup = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "successfully get are group", data: group });
+      .json({ message: "successfully get all groups", data: group });
   } catch (error) {
     res.status(500).json({
       message: error.message,
