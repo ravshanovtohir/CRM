@@ -160,6 +160,6 @@ export const filterKirim = async (req, res) => {
         console.log(err);
       });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
