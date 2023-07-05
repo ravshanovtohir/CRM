@@ -9,11 +9,16 @@ import {
   filterKirim
 } from "../controller/pay.js";
 
-router.post("/", addNewkirim);
-router.put("/update/:id", updatekirim);
-router.get("/", getAllkirim);
-router.get("/:id", getOnekirim);
-router.post("/filter", filterKirim);
-router.delete("/delete/:id", deletekirim);
+import checkRole from "../middlewares/checkingStatus.js";
+import checkToken from "../middlewares/checkToken.js";
+import validation from "../middlewares/validation.js";
+import checkCEO from "../middlewares/checkCEO.js";
+
+router.post("/", checkToken, checkRole, validation.validationKirim, addNewkirim);
+router.put("/update/:id", checkToken, checkRole, updatekirim);
+router.get("/", checkToken, checkCEO, getAllkirim);
+router.get("/:id", checkToken, checkCEO, getOnekirim);
+router.post("/filter", checkToken, checkCEO, filterKirim);
+router.delete("/delete/:id", checkToken, checkRole, deletekirim);
 
 export default router;

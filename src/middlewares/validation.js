@@ -420,11 +420,85 @@ async function validationChiqim(req, res, next) {
 }
 
 
+async function validationKirim(req, res, next) {
+    try {
+
+        const { category, filial, fullName, phoneNumber, month, year, price, paymentType, description } = req.body
+
+        if (!category) {
+            return res.status(403).json({
+                message: "Category required!",
+                data: false,
+            });
+        }
+
+        if (!filial) {
+            return res.status(403).json({
+                message: "Filial required!",
+                data: false,
+            });
+        }
+
+        if (!fullName) {
+            return res.status(403).json({
+                message: "Full Name required!",
+                data: false,
+            });
+        }
+
+        if (!phoneNumber) {
+            return res.status(403).json({
+                message: "Phone number required!",
+                data: false,
+            });
+        }
+
+        let phone = regexPhoneNumber.test(phoneNumber)
+        if (!phone) {
+            return res.status(403).json({
+                message: "Invalid Phone Number!",
+                data: false,
+            });
+        }
+
+        if (!price) {
+            return res.status(403).json({
+                message: "Price required!",
+                data: false,
+            });
+        }
+
+        if (!paymentType) {
+            return res.status(403).json({
+                message: "Payment Type required!",
+                data: false,
+            });
+        }
+
+        if (!description) {
+            return res.status(403).json({
+                message: "Description Name required!",
+                data: false,
+            });
+        }
+        next()
+
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message,
+            data: false,
+        }); s
+    }
+}
+
+
 export default {
     validateBanner,
     validateCategory,
     validationTeacher,
     validateStudent,
     validateGroup,
-    validationChiqim
+    validationChiqim,
+    validationKirim
 }

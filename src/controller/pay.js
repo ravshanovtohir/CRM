@@ -3,7 +3,12 @@ import Pay from "../model/payment.js";
 // get All
 export const getAllkirim = async (req, res) => {
   try {
-    const kirim = await Pay.find();
+    const kirim = await Pay.find()
+      .populate({
+        path: "category",
+        model: "Category",
+        select: ["title", "price", "duration"]
+      })
     res
       .status(200)
       .json({ message: "successfully get are kirim", data: kirim });
@@ -18,7 +23,12 @@ export const getAllkirim = async (req, res) => {
 // get
 export const getOnekirim = async (req, res) => {
   try {
-    const kirim = await Pay.findById(req.params.id);
+    const kirim = await Pay.findById(req.params.id)
+      .populate({
+        path: "category",
+        model: "Category",
+        select: ["title", "price", "duration"]
+      })
     res
       .status(200)
       .json({ message: "successfully get are kirim", data: kirim });
@@ -86,7 +96,13 @@ export const updatekirim = async (req, res) => {
         },
       },
       { new: true, useFindAndModify: false }
-    );
+    ).populate({
+      path: "category",
+      model: "Category",
+      select: ["title", "price", "duration"]
+    })
+
+
     if (!kirim) {
       res.status(500).json({
         message: "Is not a kirim",
@@ -123,6 +139,11 @@ export const filterKirim = async (req, res) => {
     const year = date.split("/").slice(2);
 
     await Pay.find({ month: month, year: year })
+      .populate({
+        path: "category",
+        model: "Category",
+        select: ["title", "price", "duration"]
+      })
       .then((profile) => {
         if (!profile) {
           return res.status(404).json({ error: "No Profile Found" });
