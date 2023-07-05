@@ -82,6 +82,11 @@ export const addNewgroup = async (req, res) => {
 
   const date = new Date(req?.body?.startGroup)
   const category = await Category.findById(req.body.category)
+  console.log(date);
+
+  // let a = date.setMonth(date.getMonth() + category.duration)
+  // console.log(new Date(a));
+
   try {
     const group = new Group({
       gropName: req.body.gropName,
@@ -90,8 +95,8 @@ export const addNewgroup = async (req, res) => {
       category: req.body.category,
       day: req.body.day,
       startTime: req.body.startTime,
-      startGroup: date,
-      endGroup: date.setMonth(date.getMonth() + category.duration),
+      startGroup: req?.body?.startGroup,
+      endGroup: new Date(date.setMonth(date.getMonth() + (category.duration - 1))),
     });
 
     if (group.day === "toq") {
