@@ -6,6 +6,14 @@ const studentSchema = new Schema(
       type: "string",
       required: true
     },
+    username: {
+      type: String,
+      required: true
+    },
+    password: {
+      type: String,
+      required: true
+    },
     date_birth: {
       type: Date,
       required: true, trim: true

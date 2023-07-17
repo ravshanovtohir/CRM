@@ -1,10 +1,12 @@
 import JWT from "../utils/JWT.js"
 import Staff from "../model/staff.js"
+import Students from "../model/students.js"
 
 export default async function (req, res, next) {
     try {
         let { token } = req.headers
         let staffs = await Staff.find()
+        let students = await Students.find()
 
         if (!token) {
             return res.status(400).json({
@@ -31,9 +33,18 @@ export default async function (req, res, next) {
             })
         }
 
-        const staff = staffs.some(staff => staff._id == user_id)
 
-        if (!staff) {
+        const staff = staffs.some(staff => staff._id == user_id)
+        const student = students.filter(student => student._id == user_id)
+
+        if (student) {
+            req.user_id = user_id
+            return next()
+        }
+
+
+        if (!(staff || student)) {
+            console.log("hello");
             return res.status(400).json({
                 message: "Token is invalid",
                 data: false

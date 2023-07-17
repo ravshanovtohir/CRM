@@ -135,18 +135,20 @@ export const addstudents = async (req, res) => {
         group.students.push(req.params.id);
         await group.save();
       }
-      res
+      console.log(group.day)
+
+      // studentga guruhning davomat uchun kunlarini qo'shish
+      const student = await Students.findById(req.params.id);
+      if (student) {
+        student.days = group.date;
+        await student.save();
+      }
+
+      return res
         .status(200)
         .json({ messages: "Successfully added students", data: group });
     }
-    // studentga guruhning davomat uchun kunlarini qo'shish
-    const student = await Students.findById(req.params.id);
-    if (student) {
-      student.group = group._id;
-      await student.save();
-      student.group = group._id;
-      await student.save();
-    }
+
   } catch (error) {
     res.status(401).json({ messages: error.message, data: false });
   }
@@ -180,6 +182,6 @@ export const davomat = async (req, res) => {
       }
     ).clone();
   } catch (error) {
-    res.status(401).json({ messages: error.message });
+    return res.status(401).json({ messages: error.message });
   }
 };

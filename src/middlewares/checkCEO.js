@@ -6,8 +6,21 @@ export default async function checkCEO(req, res, next) {
 
         const id = req.user_id
 
-        const staff = await Staff.findById(id)
+        console.log(11);
 
+        if (req.method === 'GET' && req.url == '/:id') {
+
+            if (id !== req.params.id) {
+                return res.status(403).json({
+                    message: "you have no authority.",
+                    data: false
+                })
+            }
+            next()
+        }
+
+
+        const staff = await Staff.findById(id)
 
         if (!(staff.is_ceo === true)) {
             return res.status(403).json({
